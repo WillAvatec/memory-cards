@@ -1,13 +1,6 @@
 import ScoreDisplay from './Score.js'
 import CardLogic from './CardLogic.js'
 import { useState } from 'react';
-function getImages(){
-    // Get sushi images from Api Pexels
-    // API key : oc6Fo96QjXj8NyhPQsh1zzkp6HT7HfgHL91jjKGM7MVbQp1z0iY2eTJz
-    let arr = [];
-    return arr
-}
-
 
 export default function Main (){
     const [score, setScore] = useState(0);
