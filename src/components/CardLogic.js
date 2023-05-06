@@ -1,30 +1,47 @@
 import Card from './Card.js'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { randomRef } from './utils/randomize.js'; //return a function that needs an array to retrieve a random element
+import { getImages } from './utils/fetchImages.js';
 
 export default function CardLogic ({scoreUpdate}){
-    const [cards, setCards] = useState({});
+    const [ref, setRefs] = useState({});
+    const [images, setImages] = useState([]);
     const handleClick = (cardRef) => {
-        if(!cards[cardRef]){
+        if(!ref[cardRef]){
             scoreUpdate.up1();
-            setCards(prevCards => ({
+            setRefs(prevCards => ({
                 ...prevCards,
                 [cardRef]:cardRef
             }))
         }
         else{
             scoreUpdate.reset();
-            setCards({});
+            setRefs({});
         }
     }
-    
+    const fetchData = async () => {
+        const data = await getImages();
+        console.log(data);
+        setImages([...data]);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
 
     return(
         <div>
-            <Card handleClick={handleClick} refID={1}/>
-            <Card handleClick={handleClick} refID={2}/>
-            <Card handleClick={handleClick} refID={3}/>
-            <Card handleClick={handleClick} refID={4}/>
+            {images.map(img=>{
+                return <Card  
+                handleClick={handleClick}
+                color={img.avg_color}
+                srcUrl={img.src.portrait}
+                altProp={img.alt}
+                refID={img.id}
+                key={img.id}
+                />
+            })}
         </div>
     )
 }
