@@ -1,13 +1,15 @@
 import Card from './Card.js'
 import { useState, useEffect } from 'react';
-import { randomRef } from './utils/randomize.js'; //return a function that needs an array to retrieve a random element
+import { random } from './utils/randomize.js'; //return a function that needs an array to retrieve a random element
 import { getImages } from './utils/fetchImages.js';
 
 export default function CardLogic ({scoreUpdate}){
     const [ref, setRefs] = useState({});
     const [images, setImages] = useState([]);
     const handleClick = (cardRef) => {
+        setImages(random(images))
         if(!ref[cardRef]){
+            setImages(random(images))
             scoreUpdate.up1();
             setRefs(prevCards => ({
                 ...prevCards,
@@ -15,6 +17,7 @@ export default function CardLogic ({scoreUpdate}){
             }))
         }
         else{
+            setImages(random(images))
             scoreUpdate.reset();
             setRefs({});
         }
@@ -26,22 +29,29 @@ export default function CardLogic ({scoreUpdate}){
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if(!images.length){
+            fetchData();
+        }
+    }, [images]);
 
 
     return(
-        <div>
-            {images.map(img=>{
+        <div className='card-container'>
+            {images.length ? images.map(img=>{
                 return <Card  
-                handleClick={handleClick}
-                color={img.avg_color}
-                srcUrl={img.src.portrait}
-                altProp={img.alt}
-                refID={img.id}
-                key={img.id}
-                />
-            })}
+                    handleClick={handleClick}
+                    color={img.avg_color}
+                    srcUrl={img.src.portrait}
+                    altProp={img.alt}
+                    refID={img.id}
+                    key={img.id}
+                />        
+            })
+            : <div className='placeholder'>
+                
+            </div>
+            
+            }
         </div>
     )
 }
