@@ -4,7 +4,7 @@ import Main from './components/Main.js'
 function App() {
   return (
     <div className="App">
-        <header>Sushi-o Cards</header>
+        <header>Sushi-<strong>O</strong> Cards</header>
         <Main/>
     </div>
   );

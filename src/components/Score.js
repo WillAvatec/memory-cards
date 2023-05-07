@@ -2,7 +2,7 @@
 export default function Score ({score,highS}) {
 
     return (
-        <div>
+        <div className="score">
             <div id="actual">
                 Score: {score}
             </div>
